@@ -1,0 +1,81 @@
+name: Build and Deploy
+
+on:
+    push:
+        branches: [main, master]
+    pull_request:
+        branches: [main, master]
+
+permissions:
+    contents: write
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [24.16.0]
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: Enable corepack
+              run: corepack enable
+
+            - name: Cache dependencies
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      .yarn/cache
+                      node_modules
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
+            - name: Install dependencies
+              run: yarn install --immutable
+              env:
+                  CI: true
+
+            - name: Run ESLint
+              run: yarn lint
+              continue-on-error: true
+
+            - name: Build Next.js project
+              run: yarn build
+              env:
+                  CI: true
+
+            - name: Create .nojekyll file
+              run: touch out/.nojekyll
+
+            - name: Configure Git for deployment
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+
+            - name: Deploy to GitHub Pages
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./out
+                  cname: # {{CNAME}} - set to your custom domain or leave empty
+                  user_name: github-actions[bot]
+                  user_email: github-actions[bot]@users.noreply.github.com
+
+            - name: Print deployment info
+              env:
+                  REPO_OWNER: ${{ github.repository_owner }}
+                  REPO_NAME: ${{ github.event.repository.name }}
+              run: |
+                  echo "Deployment completed successfully."
+                  echo "Site available at: https://${REPO_OWNER}.github.io/${REPO_NAME}"
