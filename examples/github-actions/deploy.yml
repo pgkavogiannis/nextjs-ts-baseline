@@ -1,0 +1,83 @@
+name: Build and Deploy
+
+on:
+    push:
+        branches: [main, master]
+    pull_request:
+        branches: [main, master]
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '24.16.0'
+
+            - name: Enable corepack
+              run: corepack enable
+
+            - name: Cache dependencies
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      .yarn/cache
+                      node_modules
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
+            - name: Install dependencies
+              run: yarn install --immutable
+              env:
+                  CI: true
+
+            - name: Run ESLint
+              run: yarn lint
+
+            - name: Build Next.js project
+              run: yarn build
+              env:
+                  CI: true
+
+            - name: Create .nojekyll file
+              run: touch out/.nojekyll
+
+            # Uncomment and fill in to use a custom domain (or leave commented for the default github.io URL):
+            # - name: Set custom domain
+            #   run: echo "{{CNAME}}" > ./out/CNAME
+
+            - name: Upload build artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./out
+
+    deploy:
+        # Only deploy on pushes to main/master — pull_request runs build-only to verify the change.
+        if: github.event_name == 'push'
+        needs: build
+        runs-on: ubuntu-latest
+
+        permissions:
+            pages: write
+            id-token: write
+
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
+
+            - name: Print deployment info
+              run: echo "Site available at ${{ steps.deployment.outputs.page_url }}"
