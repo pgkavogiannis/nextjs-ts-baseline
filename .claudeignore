@@ -1,0 +1,72 @@
+# .claudeignore
+
+# Claude internals
+.claude/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+*.tsbuildinfo
+.next/
+.nuxt/
+.cache/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.swp
+*~
+*.sw?
+
+# Compiled files
+*.js.map
+*.d.ts.map
+
+# Test coverage
+coverage/
+.nyc_output/
+htmlcov/
+.coverage
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.pnpm-store/
+.yarn/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+temp/
+
+# Testing
+.jest/
+
+# Version control
+.git/
