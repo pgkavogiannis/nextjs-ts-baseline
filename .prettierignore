@@ -1,0 +1,9 @@
+node_modules
+out
+.next
+*.min.js
+*.min.css
+yarn.lock
+
+# Claude Code tool config (plans, settings)
+.claude/

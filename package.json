@@ -1,0 +1,53 @@
+{
+    "name": "{{PROJECT_NAME}}",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "lint": "eslint .",
+        "build": "next build",
+        "start": "next start",
+        "deploy": "yarn build && touch out/.nojekyll",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "prepare": "husky"
+    },
+    "dependencies": {
+        "clsx": "^2.1.1",
+        "next": "16.2.6",
+        "react": "19.2.7",
+        "react-dom": "19.2.7"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.0.0",
+        "@commitlint/config-conventional": "^19.0.0",
+        "@tailwindcss/postcss": "4.3.0",
+        "@types/node": "24.12.4",
+        "@types/react": "19.2.16",
+        "@types/react-dom": "19.2.3",
+        "autoprefixer": "^10.5.0",
+        "eslint": "9.39.4",
+        "eslint-config-next": "16.2.7",
+        "husky": "^9.1.7",
+        "lint-staged": "17.0.7",
+        "postcss": "^8.5.15",
+        "prettier": "^3.8.3",
+        "tailwindcss": "^4.3.0",
+        "typescript": "6.0.3"
+    },
+    "browserslist": "> 1%",
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{js,jsx,json,css,scss,md,html}": [
+            "prettier --write"
+        ]
+    },
+    "volta": {
+        "node": "24.16.0",
+        "yarn": "4.16.0"
+    },
+    "packageManager": "yarn@4.16.0"
+}
