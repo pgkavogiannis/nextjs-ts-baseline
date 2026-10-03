@@ -25,10 +25,6 @@ out/
 # debug
 *.log*
 
-# local env files
-.env
-.env*.local
-
 # vercel
 .vercel
 
@@ -50,3 +46,9 @@ gitleaks*.sarif
 
 # Claude Code local settings
 .claude/settings.local.json
+CLAUDE.local.md
+
+# Environment variables (only .env.example is committed)
+.env
+.env.*
+!.env.example
