@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+- Bump `next` and `eslint-config-next` to 16.3.8 (critical RCE advisories affecting <16.3.6)
+- Bump `postcss` floor to ^8.5.28 (sourceMappingURL path traversal advisories)
+
 ## [0.1.0] - {{RELEASE_DATE}}
 
 ### Added
