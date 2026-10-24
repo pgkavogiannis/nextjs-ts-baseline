@@ -9,7 +9,7 @@ paths:
 ---
 # React Testing
 
-> This file extends [typescript/testing.md](../typescript/testing.md) and [common/testing.md](../common/testing.md) with React specific content.
+> This file extends [typescript/testing.md](../typescript/testing.md) and `~/.claude/rules/ecc/common/testing.md` (user level) with React specific content.
 
 ## Library Choice
 

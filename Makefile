@@ -1,4 +1,4 @@
-.PHONY: lint typecheck build ci
+.PHONY: lint typecheck test build ci
 
 lint:
 	yarn lint
@@ -10,7 +10,10 @@ typecheck:
 		yarn tsc --noEmit; \
 	fi
 
+test:
+	yarn test:coverage
+
 build:
 	yarn build
 
-ci: lint typecheck build
+ci: lint typecheck test build

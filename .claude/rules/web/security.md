@@ -10,7 +10,7 @@ paths:
   - "**/*.vue"
   - "**/*.svelte"
 ---
-> This file extends [common/security.md](../common/security.md) with web-specific security content.
+> This file extends `~/.claude/rules/ecc/common/security.md` (user level) with web-specific security content.
 
 # Web Security Rules
 

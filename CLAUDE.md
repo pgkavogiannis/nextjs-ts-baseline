@@ -20,7 +20,10 @@ yarn build        # Production build
 yarn lint         # Run ESLint
 yarn format       # Format all files with Prettier
 yarn format:check # Check formatting without writing
-make ci           # Full CI check: lint + typecheck + build
+yarn test         # Vitest in watch mode
+yarn test:run     # Vitest once; one file: yarn test:run path/to/file.test.tsx, by name: yarn test:run -t "name"
+yarn test:coverage # Vitest once with coverage; fails under the 80% thresholds
+make ci           # Full CI check: lint + typecheck + test:coverage + build
 ```
 
 ## Tech Stack
@@ -29,6 +32,7 @@ make ci           # Full CI check: lint + typecheck + build
 - **React** with TypeScript
 - **Tailwind CSS** with PostCSS
 - **Yarn Berry** (node-modules linker)
+- **Vitest** with happy-dom and Testing Library; tests import from `'vitest'` (globals off)
 
 ## Architecture
 
@@ -49,3 +53,10 @@ See [USAGE.md](USAGE.md) for the rationale behind non-obvious config choices (Ya
 
 <!-- Document project-specific patterns here as the project evolves -->
 <!-- Examples: per-page layouts, auth flow, data fetching strategy -->
+
+## Project Claude tooling
+
+- Rule packs: ECC `common/` is installed at user level (`~/.claude/rules/ecc/common/`, copied from the ECC
+  checkout — repeat on each machine). Only the stack packs this repo uses, `react/`, `typescript/` and `web/`,
+  are vendored in `.claude/rules/`, identical to ECC except that their `common/` links point at the user-level
+  path. Project overrides go in `.claude/rules/stack.md`, not in the packs.
