@@ -7,7 +7,7 @@ paths:
 ---
 # TypeScript/JavaScript Coding Style
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with TypeScript/JavaScript specific content.
+> This file extends `~/.claude/rules/ecc/common/coding-style.md` (user level) with TypeScript/JavaScript specific content.
 
 ## Types and Interfaces
 

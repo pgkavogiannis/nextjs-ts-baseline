@@ -10,7 +10,7 @@ paths:
   - "**/*.vue"
   - "**/*.svelte"
 ---
-> This file extends [common/hooks.md](../common/hooks.md) with web-specific hook recommendations.
+> This file extends `~/.claude/rules/ecc/common/hooks.md` (user level) with web-specific hook recommendations.
 
 # Web Hooks
 

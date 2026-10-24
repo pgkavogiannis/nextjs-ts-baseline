@@ -20,7 +20,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: '24.16.0'
+                  node-version-file: .node-version
 
             - name: Enable corepack
               run: corepack enable
@@ -40,11 +40,9 @@ jobs:
               env:
                   CI: true
 
-            - name: Run ESLint
-              run: yarn lint
-
-            - name: Build Next.js project
-              run: yarn build
+            # Lint, typecheck, test with coverage thresholds, then build into out/ (see Makefile).
+            - name: Run CI checks and build
+              run: make ci
               env:
                   CI: true
 

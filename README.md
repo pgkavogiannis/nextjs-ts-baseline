@@ -11,6 +11,10 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 | `tsconfig.json`                      | ES2020, strict, bundler resolution, react-jsx                                                  |
 | `eslint.config.js`                   | Flat config: Next.js core-web-vitals + react-hooks                                             |
 | `postcss.config.js`                  | Tailwind CSS v4 + autoprefixer                                                                 |
+| `vitest.config.mts`                  | Vitest + happy-dom + Testing Library, coverage over all sources with 80% thresholds            |
+| `vitest.setup.mts`                   | Testing Library cleanup after each test (Vitest globals stay off)                              |
+| `.node-version`                      | Node version for CI, mise, nodenv, fnm and hosts that ignore Volta                             |
+| `.claude/rules/`                     | Vendored ECC rule packs + `stack.md` project overrides (needs user-level ECC `common/`)        |
 | `LICENSE`                            | MIT license — fill in `{{YEAR}}` and `{{AUTHOR}}`                                              |
 | `CHANGELOG.md`                       | Keep a Changelog format starter                                                                |
 | `CONTRIBUTING.md`                    | Dev setup, pre-commit hooks, PR guidelines                                                     |
@@ -27,7 +31,7 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 | `.gitleaks.toml`                     | Allowlist for Yarn Berry release bundle                                                        |
 | `.yarnrc.yml`                        | Yarn Berry: node-modules linker, scripts disabled                                              |
 | `.claudeignore`                      | Claude Code ignore patterns                                                                    |
-| `.husky/pre-commit`                  | lint-staged + tsc --noEmit on every commit                                                     |
+| `.husky/pre-commit`                  | lint-staged + `make typecheck` (tsc --noEmit, skipped while no sources exist) on every commit  |
 | `examples/github-actions/deploy.yml` | GitHub Pages deploy workflow (platform example — copy to `.github/workflows/` if using GitHub) |
 
 ## Platform examples
@@ -39,12 +43,15 @@ host:
 |--------------------------------------|-------------------------------------------------|
 | `examples/github-actions/deploy.yml` | GitHub Actions — build + deploy to GitHub Pages |
 
-For any platform, `make ci` (lint → typecheck → build) is the canonical CI entry point.
+For any platform, `make ci` (lint → typecheck → test with coverage → build) is the canonical CI entry point; the GitHub Actions
+example runs exactly that.
 
 ## Prerequisites
 
-- [Volta](https://volta.sh/) for Node/Yarn version management
-- Node 24+ (pinned in `package.json` via Volta)
+- Node 24, pinned twice: `volta.node` in `package.json` for [Volta](https://volta.sh/), and `.node-version` for CI and every other
+  version manager. Change both together.
+- Yarn 4 through corepack (`packageManager` in `package.json`)
+- For Claude Code: the ECC `common/` rules at `~/.claude/rules/ecc/common/`. The packs in `.claude/rules/` extend them by that path.
 
 ## Bootstrap
 
