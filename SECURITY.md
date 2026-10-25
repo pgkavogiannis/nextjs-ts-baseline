@@ -12,7 +12,8 @@
 
 **Do not open a public issue for security vulnerabilities.**
 
-Email **{{SECURITY_EMAIL}}** with:
+Report it privately through GitHub: open the repository's **Security** tab and choose **Report a vulnerability**
+(private vulnerability reporting). Include:
 
 - A description of the vulnerability
 - Steps to reproduce
