@@ -3,7 +3,7 @@
 ## Supported Versions
 
 | Version | Supported |
-|---------|-----------|
+| ------- | --------- |
 | latest  | Yes       |
 | N-1     | Yes       |
 | older   | No        |
@@ -12,8 +12,9 @@
 
 **Do not open a public issue for security vulnerabilities.**
 
-Report it privately through GitHub: open the repository's **Security** tab and choose **Report a vulnerability**
-(private vulnerability reporting). Include:
+Report it privately to the maintainers. Use the private reporting channel your hosting platform offers (on GitHub: the
+repository's **Security** tab → **Report a vulnerability**); if it has none, contact a maintainer directly. Never post
+details in a public issue or merge request. Include:
 
 - A description of the vulnerability
 - Steps to reproduce

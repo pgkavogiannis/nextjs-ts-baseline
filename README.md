@@ -5,7 +5,7 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 ## What's included
 
 | File                                 | Purpose                                                                                        |
-|--------------------------------------|------------------------------------------------------------------------------------------------|
+| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
 | `package.json`                       | Scripts, lint-staged, Volta pins, tooling deps                                                 |
 | `next.config.js`                     | Static export, strict mode, unoptimized images                                                 |
 | `tsconfig.json`                      | ES2020, strict, bundler resolution, react-jsx                                                  |
@@ -14,8 +14,9 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 | `vitest.config.mts`                  | Vitest + happy-dom + Testing Library, coverage over all sources with 80% thresholds            |
 | `vitest.setup.mts`                   | Testing Library cleanup after each test (Vitest globals stay off)                              |
 | `.node-version`                      | Node version for CI, mise, nodenv, fnm and hosts that ignore Volta                             |
-| `.claude/rules/`                     | Vendored ECC rule packs + `stack.md` project overrides (needs user-level ECC `common/`)        |
+| `.claude/rules/`                     | Vendored ECC rule packs + `stack.md` overrides (needs user-level ECC `common/`)                |
 | `LICENSE`                            | MIT license — update the copyright line                                                        |
+| `THIRD_PARTY_NOTICES.md`             | Attribution and MIT notice for the vendored ECC rule packs                                     |
 | `CHANGELOG.md`                       | Keep a Changelog format starter                                                                |
 | `CONTRIBUTING.md`                    | Dev setup, pre-commit hooks, PR guidelines                                                     |
 | `.editorconfig`                      | Editor-agnostic indent/charset rules                                                           |
@@ -23,14 +24,13 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 | `CLAUDE.md`                          | Claude Code project instructions starter                                                       |
 | `.env.example`                       | Documents required env vars; safe to commit                                                    |
 | `renovate.json`                      | Automated dependency updates (platform-agnostic)                                               |
-| `SECURITY.md`                        | Vulnerability disclosure policy (GitHub private vulnerability reporting)                       |
+| `SECURITY.md`                        | Vulnerability disclosure policy (platform-neutral reporting channel)                           |
 | `Makefile`                           | Platform-agnostic CI entry point (`make ci`)                                                   |
 | `.prettierrc`                        | 4-space indent, single quotes, 140 print width                                                 |
 | `.prettierignore`                    | Ignores build dirs, lockfiles, .claude/                                                        |
 | `.gitignore`                         | Node, Next.js, Yarn Berry, env files, scan output                                              |
 | `.gitleaks.toml`                     | Allowlist for Yarn Berry release bundle                                                        |
 | `.yarnrc.yml`                        | Yarn Berry: node-modules linker, scripts disabled                                              |
-| `.claudeignore`                      | Claude Code ignore patterns                                                                    |
 | `.husky/pre-commit`                  | lint-staged + `make typecheck` (tsc --noEmit, skipped while no sources exist) on every commit  |
 | `examples/github-actions/deploy.yml` | GitHub Pages deploy workflow (platform example — copy to `.github/workflows/` if using GitHub) |
 
@@ -40,7 +40,7 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 host:
 
 | File                                 | Platform                                        |
-|--------------------------------------|-------------------------------------------------|
+| ------------------------------------ | ----------------------------------------------- |
 | `examples/github-actions/deploy.yml` | GitHub Actions — build + deploy to GitHub Pages |
 
 For any platform, `make ci` (lint → typecheck → test with coverage → build) is the canonical CI entry point; the GitHub Actions
@@ -58,16 +58,16 @@ example runs exactly that.
 1. Copy this directory into your new project root
 2. Find-replace `{{PROJECT_NAME}}` (package.json, CLAUDE.md) and `{{RELEASE_DATE}}` (CHANGELOG.md), and update the copyright line in
    LICENSE
-3. Set `cname:` in `.github/workflows/deploy.yml` or remove it
+3. For a custom domain, fill in the commented `CNAME` step of the deploy workflow you copied from `examples/`, or leave it commented
 4. Run:
-   ```sh
-   corepack enable
-   yarn set version 4.16.0
-   yarn install
-   ```
+    ```sh
+    corepack enable
+    yarn set version 4.16.0
+    yarn install
+    ```
 5. Scaffold your `pages/` or `app/` directory separately
-6. Enable private vulnerability reporting (Settings → Code security), which SECURITY.md points reporters to, or replace that section with
-   a contact address
+6. Set up a private reporting channel and keep SECURITY.md accurate (on GitHub, enable private vulnerability reporting under
+   Settings → Code security; elsewhere add a contact address)
 
 ## Notes
 
