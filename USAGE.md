@@ -96,6 +96,17 @@ identical across platforms — only the hosting differs.
 The template enables automerge for patch/minor devDependency updates on a Monday morning
 schedule. For production dependencies or major bumps, a PR is opened for manual review.
 
+`minimumReleaseAge: "7 days"` mirrors the Yarn age gate (`npmMinimalAgeGate: 7d`): Renovate does not
+propose a release younger than that. On GitHub, Renovate's vulnerability-alert PRs bypass it
+(`vulnerabilityAlerts.minimumReleaseAge` defaults to `null`), so security fixes are not delayed; that
+path is GitHub-only. If Yarn's own gate refuses a fresh security release, check the package's
+provenance and resolve it once with `yarn up -R <pkg> --no-time-gate`.
+
+Automerge only waits for checks that exist. The template ships no active CI (`examples/` only), so
+until you add a pipeline that runs `make ci`, automerged updates are unverified: add CI or remove the
+automerge rule. If the project is also on GitHub, turn off Dependabot version and security update PRs
+in the repository settings so the two bots do not open duplicates.
+
 ---
 
 ## commitlint — scope is optional
