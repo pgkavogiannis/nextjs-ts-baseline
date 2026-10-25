@@ -160,6 +160,8 @@ report instead of showing 0%. The glob covers both a root layout (`app/`, `compo
 **Thresholds at 80%**
 They sit in the config and `make ci` runs coverage, so the number is enforced rather than advisory.
 With no sources the report is 0/0, which passes.
+The threshold covers `app/` too, so the first scaffolded page fails `make ci` until it has a test.
+That is deliberate; scope `coverage.include` down if you would rather exclude UI shells.
 
 **`passWithNoTests: true`**
 Keeps `make ci` green in the template and in a fresh project before the first test exists (together
@@ -172,6 +174,25 @@ global, so `vitest.setup.mts` registers `cleanup` explicitly.
 
 **`vite` as a direct devDependency**
 Vitest 5 and `@vitejs/plugin-react` declare `vite` as a peer dependency and do not install it.
+
+---
+
+## scripts/init.mjs
+
+Replaces the manual find-and-replace of `{{PROJECT_NAME}}`, the LICENSE copyright line and
+`{{RELEASE_DATE}}`. The script also exists because `yarn.lock` embeds the package name: renaming
+only `package.json` makes `yarn install --immutable` fail in CI until someone regenerates the lock,
+so the script runs `yarn install` itself. It also drops the "Template repo" note from `CLAUDE.md`,
+which describes the template rather than the new project.
+
+It is an `.mjs` file, like the Vitest config, so the `typecheck` guard still sees an empty tree.
+With flags it runs unattended (`--name`, `--author`, `--year`); without them it prompts on a
+terminal and fails with a usage hint otherwise. It refuses to run twice (no `{{PROJECT_NAME}}`
+left) and removes itself and its test afterwards. `--keep` leaves them; the test skips its
+template-file checks once the placeholders are gone.
+
+`scripts/init.test.mts` runs against the real template files, so editing a placeholder out of
+`CLAUDE.md`, `LICENSE` or `CHANGELOG.md` fails `make ci` instead of breaking the script later.
 
 ---
 

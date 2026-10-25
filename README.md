@@ -32,6 +32,7 @@ A configs-only template for bootstrapping Next.js + TypeScript projects with a p
 | `.gitleaks.toml`                     | Allowlist for Yarn Berry release bundle                                                        |
 | `.yarnrc.yml`                        | Yarn Berry: node-modules linker, scripts disabled                                              |
 | `.husky/pre-commit`                  | lint-staged + `make typecheck` (tsc --noEmit, skipped while no sources exist) on every commit  |
+| `scripts/init.mjs`                   | One-shot bootstrap: fills placeholders, refreshes yarn.lock, deletes itself                    |
 | `examples/github-actions/deploy.yml` | GitHub Pages deploy workflow (platform example — copy to `.github/workflows/` if using GitHub) |
 
 ## Platform examples
@@ -56,18 +57,18 @@ example runs exactly that.
 ## Bootstrap
 
 1. Copy this directory into your new project root
-2. Find-replace `{{PROJECT_NAME}}` (package.json, CLAUDE.md) and `{{RELEASE_DATE}}` (CHANGELOG.md), and update the copyright line in
-   LICENSE
-3. For a custom domain, fill in the commented `CNAME` step of the deploy workflow you copied from `examples/`, or leave it commented
-4. Run:
+2. Run the init script. It fills in `{{PROJECT_NAME}}` (package.json, CLAUDE.md), the LICENSE copyright line and `{{RELEASE_DATE}}`
+   (CHANGELOG.md), runs `yarn install` to refresh `yarn.lock`, and deletes itself:
     ```sh
     corepack enable
+    node scripts/init.mjs   # prompts; or pass --name my-app --author "Jane Doe" [--year 2026]
     yarn set version 4.16.0
-    yarn install
     ```
-5. Scaffold your `pages/` or `app/` directory separately
-6. Set up a private reporting channel and keep SECURITY.md accurate (on GitHub, enable private vulnerability reporting under
+    Other flags: `--no-install`, `--keep`, `--dry-run`, `--help`.
+3. For a custom domain, fill in the commented `CNAME` step of the deploy workflow you copied from `examples/`, or leave it commented
+4. Set up a private reporting channel and keep SECURITY.md accurate (on GitHub, enable private vulnerability reporting under
    Settings → Code security; elsewhere add a contact address)
+5. Scaffold your `pages/` or `app/` directory separately
 
 ## Notes
 
