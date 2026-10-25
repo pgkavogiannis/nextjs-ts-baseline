@@ -38,10 +38,3 @@
 *.eot binary
 *.zip binary
 *.pdf binary
-
-# Exclude dev files from git archive
-.claudeignore export-ignore
-.gitleaks.toml export-ignore
-CLAUDE.md export-ignore
-CONTRIBUTING.md export-ignore
-.github export-ignore

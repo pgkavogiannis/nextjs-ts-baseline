@@ -10,7 +10,7 @@
         "deploy": "yarn build && touch out/.nojekyll",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "prepare": "husky",
+        "postinstall": "husky",
         "test": "vitest",
         "test:run": "vitest run",
         "test:coverage": "vitest run --coverage"

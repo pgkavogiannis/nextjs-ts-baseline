@@ -14,6 +14,10 @@ test:
 	yarn test:coverage
 
 build:
-	yarn build
+	@if [ ! -d app ] && [ ! -d pages ] && [ ! -d src/app ] && [ ! -d src/pages ]; then \
+		echo "build: no app/ or pages/ directory yet, skipping"; \
+	else \
+		yarn build; \
+	fi
 
 ci: lint typecheck test build

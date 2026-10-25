@@ -10,7 +10,7 @@ user-level copy. Put project overrides here, not in them, so a pack can be re-co
 
 - **Yarn 4 (Berry), not pnpm or npm.** `packageManager` in `package.json` pins it; run it through corepack.
   Translate any `pnpm …` or `npm run …` in the packs to `yarn …`.
-- `.yarnrc.yml` sets `enableScripts: false` and `npmMinimalAgeGate: 7`. A dependency that needs its install
+- `.yarnrc.yml` sets `enableScripts: false` and `npmMinimalAgeGate: 7d`. A dependency that needs its install
   script gets `dependenciesMeta.<pkg>.scripts: true`; do not turn scripts back on globally. See `USAGE.md`.
 
 ## Runtime: static export

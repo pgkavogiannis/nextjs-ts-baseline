@@ -2,9 +2,11 @@
 
 ## .yarnrc.yml
 
-**`npmMinimalAgeGate: 7`**
+**`npmMinimalAgeGate: 7d`**
 New packages must be at least 7 days old before Yarn will install them. Mitigates supply-chain
-attacks where a malicious package is published and immediately depended on.
+attacks where a malicious package is published and immediately depended on. The setting is a
+duration, and a bare number means minutes: `7` would be a 7-minute gate, weaker than Yarn's `1d`
+default, so keep the unit.
 
 **`nodeLinker: node-modules`**
 Uses the classic `node_modules` layout instead of Yarn PnP. PnP has better performance and
@@ -33,6 +35,11 @@ third-party code, not developer-authored secrets.
 
 ## .husky/pre-commit
 
+Hooks are installed by the `postinstall` script (`husky`), not `prepare`: Yarn Berry never runs
+`prepare` on install, so the hooks would silently not exist. `enableScripts: false` affects
+dependencies only; the workspace's own `postinstall` still runs. Set `HUSKY=0` to skip it (e.g. in
+a Docker build).
+
 Runs two commands:
 
 1. `yarn lint-staged` — runs ESLint + Prettier only on staged files (fast)
@@ -47,7 +54,14 @@ block every commit to the template and to a fresh project before its first sourc
 
 ---
 
-## eslint.config.js — dropped overrides
+## eslint.config.js
+
+`eslint-config-next/core-web-vitals` alone applies no TypeScript rules (an unused variable or an
+explicit `any` lints clean), so `eslint-config-next/typescript` is spread after it. The
+`no-require-imports` rule is turned off for `*.config.{js,cjs}` because this file and other tool
+configs are CommonJS.
+
+### Dropped overrides
 
 The source project disabled two rules for portfolio-specific reasons:
 
@@ -58,8 +72,8 @@ The source project disabled two rules for portfolio-specific reasons:
   the `useSyncExternalStore` pattern, which triggers this rule. Re-add as `'warn'` if you have
   legitimate one-time mount initialization from client storage.
 
-The base flat config (spread `core-web-vitals` + register `react-hooks` plugin) is retained
-so both rules are active by default in new projects.
+The base flat config (spread `core-web-vitals`, which registers the `react-hooks` plugin) is
+retained so both rules are active by default in new projects.
 
 ---
 
@@ -120,6 +134,8 @@ calls it rather than listing its own steps, so CI cannot drift from the local ch
 
 The `typecheck` target skips `tsc` while the tree has no `.ts`/`.tsx` file, which is why the Vitest
 config and setup files are `.mts`: a `.ts` config would make `tsc` run on an otherwise empty template.
+Likewise the `build` target skips `next build` while there is no `app/`, `pages/`, `src/app/` or
+`src/pages/` directory, since Next.js errors out without one.
 
 ---
 
@@ -135,7 +151,8 @@ They sit in the config and `make ci` runs coverage, so the number is enforced ra
 With no sources the report is 0/0, which passes.
 
 **`passWithNoTests: true`**
-Keeps `make ci` green in the template and in a fresh project before the first test exists.
+Keeps `make ci` green in the template and in a fresh project before the first test exists (together
+with the `build` guard above, which covers the missing `app/`).
 
 **Globals off, cleanup in a setup file**
 Tests import `test`/`expect` from `'vitest'`, so `tsc` needs no ambient test types in
