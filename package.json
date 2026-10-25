@@ -6,7 +6,6 @@
         "dev": "next dev",
         "lint": "eslint .",
         "build": "next build",
-        "start": "next start",
         "deploy": "yarn build && touch out/.nojekyll",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
